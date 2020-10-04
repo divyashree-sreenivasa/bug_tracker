@@ -1,0 +1,32 @@
+{
+  "name": "bug_tracker",
+  "version": "1.0.0",
+  "description": "A bug tracker",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel src --out-dir public",
+    "watch": "babel src --out-dir public --watch --verbose",
+    "start": "nodemon -w server server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/divyashree-sreenivasa/bug_tracker.git"
+  },
+  "author": "Divyashree Sreenivasa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/divyashree-sreenivasa/bug_tracker/issues"
+  },
+  "homepage": "https://github.com/divyashree-sreenivasa/bug_tracker#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4"
+  }
+}
