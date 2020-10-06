@@ -22,6 +22,24 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+var bugs = [{
+  id: 1,
+  status: 'New',
+  owner: 'Ravan',
+  effort: 5,
+  created: new Date('2018-08-15'),
+  due: undefined,
+  title: 'Error in console when clicking Add'
+}, {
+  id: 2,
+  status: 'Assigned',
+  owner: 'Eddie',
+  effort: 14,
+  created: new Date('2018-08-16'),
+  due: new Date('2018-08-30'),
+  title: 'Missing bottom border on panel'
+}];
+
 var BugFilter = /*#__PURE__*/function (_React$Component) {
   _inherits(BugFilter, _React$Component);
 
@@ -43,36 +61,70 @@ var BugFilter = /*#__PURE__*/function (_React$Component) {
   return BugFilter;
 }(React.Component);
 
-var BugTable = /*#__PURE__*/function (_React$Component2) {
-  _inherits(BugTable, _React$Component2);
+var BugRow = /*#__PURE__*/function (_React$Component2) {
+  _inherits(BugRow, _React$Component2);
 
-  var _super2 = _createSuper(BugTable);
+  var _super2 = _createSuper(BugRow);
+
+  function BugRow() {
+    _classCallCheck(this, BugRow);
+
+    return _super2.apply(this, arguments);
+  }
+
+  _createClass(BugRow, [{
+    key: "render",
+    value: function render() {
+      var bug = this.props.bug;
+      return /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, bug.id), /*#__PURE__*/React.createElement("td", null, bug.status), /*#__PURE__*/React.createElement("td", null, bug.owner), /*#__PURE__*/React.createElement("td", null, bug.created.toDateString()), /*#__PURE__*/React.createElement("td", null, bug.effort), /*#__PURE__*/React.createElement("td", null, bug.due ? bug.due.toDateString() : ''), /*#__PURE__*/React.createElement("td", null, bug.title));
+    }
+  }]);
+
+  return BugRow;
+}(React.Component);
+
+var BugTable = /*#__PURE__*/function (_React$Component3) {
+  _inherits(BugTable, _React$Component3);
+
+  var _super3 = _createSuper(BugTable);
 
   function BugTable() {
     _classCallCheck(this, BugTable);
 
-    return _super2.apply(this, arguments);
+    return _super3.apply(this, arguments);
   }
 
   _createClass(BugTable, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, "This is a placeholder for the table of bugs.");
+      var rowStyle = {
+        border: "1px solid lightblue",
+        padding: 5
+      };
+      var bugRows = bugs.map(function (bug) {
+        return /*#__PURE__*/React.createElement(BugRow, {
+          key: bug.id,
+          bug: bug
+        });
+      });
+      return /*#__PURE__*/React.createElement("table", {
+        className: "bordered-table"
+      }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "ID"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Owner"), /*#__PURE__*/React.createElement("th", null, "Created Date"), /*#__PURE__*/React.createElement("th", null, "Effort"), /*#__PURE__*/React.createElement("th", null, "Due Date"), /*#__PURE__*/React.createElement("th", null, "Title"))), /*#__PURE__*/React.createElement("tbody", null, bugRows));
     }
   }]);
 
   return BugTable;
 }(React.Component);
 
-var BugAdd = /*#__PURE__*/function (_React$Component3) {
-  _inherits(BugAdd, _React$Component3);
+var BugAdd = /*#__PURE__*/function (_React$Component4) {
+  _inherits(BugAdd, _React$Component4);
 
-  var _super3 = _createSuper(BugAdd);
+  var _super4 = _createSuper(BugAdd);
 
   function BugAdd() {
     _classCallCheck(this, BugAdd);
 
-    return _super3.apply(this, arguments);
+    return _super4.apply(this, arguments);
   }
 
   _createClass(BugAdd, [{
@@ -85,15 +137,15 @@ var BugAdd = /*#__PURE__*/function (_React$Component3) {
   return BugAdd;
 }(React.Component);
 
-var BugList = /*#__PURE__*/function (_React$Component4) {
-  _inherits(BugList, _React$Component4);
+var BugList = /*#__PURE__*/function (_React$Component5) {
+  _inherits(BugList, _React$Component5);
 
-  var _super4 = _createSuper(BugList);
+  var _super5 = _createSuper(BugList);
 
   function BugList() {
     _classCallCheck(this, BugList);
 
-    return _super4.apply(this, arguments);
+    return _super5.apply(this, arguments);
   }
 
   _createClass(BugList, [{
