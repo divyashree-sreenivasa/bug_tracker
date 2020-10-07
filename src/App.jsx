@@ -1,4 +1,4 @@
-const bugs = [
+const initialBugs = [
     {
         id: 1, 
         status: 'New', 
@@ -27,54 +27,72 @@ class BugFilter extends React.Component {
     }
 }
 
-class BugRow extends React.Component {
-    render() {
-        const bug = this.props.bug;
-        return (
-            <tr>
-                <td>{bug.id}</td>
-                <td>{bug.status}</td>
-                <td>{bug.owner}</td>
-                <td>{bug.created.toDateString()}</td>
-                <td>{bug.effort}</td>
-                <td>{bug.due ? bug.due.toDateString() : ''}</td>
-                <td>{bug.title}</td>
-            </tr>
-        );
-    }
+function BugRow(props) {
+
+    const bug = props.bug;
+    return (
+        <tr>
+            <td>{bug.id}</td>
+            <td>{bug.status}</td>
+            <td>{bug.owner}</td>
+            <td>{bug.created.toDateString()}</td>
+            <td>{bug.effort}</td>
+            <td>{bug.due ? bug.due.toDateString() : ''}</td>
+            <td>{bug.title}</td>
+        </tr>
+    );
 }
 
-class BugTable extends React.Component {
-    render() {
-        const rowStyle = {border: "1px solid lightblue", padding: 5};
-        const bugRows =  bugs.map(bug => 
+function BugTable(props) {
+
+    const bugRows =  props.bugs.map(bug => 
             <BugRow key={bug.id} bug={bug} />
-        );
-        return (
-            <table className="bordered-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Status</th>
-                        <th>Owner</th>
-                        <th>Created Date</th>
-                        <th>Effort</th>
-                        <th>Due Date</th>
-                        <th>Title</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {bugRows}
-                </tbody>
-            </table>
-        );
-    }
+    );
+    return (
+        <table className="bordered-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                    <th>Created Date</th>
+                    <th>Effort</th>
+                    <th>Due Date</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {bugRows}
+            </tbody>
+        </table>
+    );
 }
 
 class BugAdd extends React.Component {
+
+    constructor() {
+        super();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        const form = document.forms.bugAdd;
+        const bug = {
+            owner: form.owner.value,
+            title: form.title.value,
+            status: 'New',
+        }
+        this.props.createBug(bug);
+    }
+
     render() {
         return (
-            <div>This is a placeholder for a form to add a bug.</div>
+            <form name="bugAdd" onSubmit={this.handleSubmit}>
+                <input type="text" name="owner" placeholder="Owner" />
+                <input type="text" name="title" placeholder="Title" />
+                <button>Add</button>
+            </form>
         );
     }
 }
@@ -82,15 +100,40 @@ class BugAdd extends React.Component {
 
 
 class BugList extends React.Component {
+
+    constructor() {
+        super();
+        this.state = { bugs: [] };
+        this.createBug = this.createBug.bind(this);
+    }
+
+    loadData() {
+        setTimeout(() => {
+            this.setState({bugs: initialBugs})
+        }, 500);
+    }
+
+    componentDidMount() {
+        this.loadData();
+    }
+
+    createBug(bug) {
+        bug.id = this.state.bugs.length + 1;
+        bug.created = new Date();
+        const newBugsList = this.state.bugs.slice();
+        newBugsList.push(bug);
+        this.setState({ bugs: newBugsList });
+    }
+
     render() {
         return (
             <React.Fragment>
                 <h1>Bug Tracker</h1>
                 <BugFilter />
                 <hr />
-                <BugTable />
+                <BugTable bugs={this.state.bugs} />
                 <hr />
-                <BugAdd />
+                <BugAdd createBug={this.createBug} />
             </React.Fragment>
         );
     }

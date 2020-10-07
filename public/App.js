@@ -22,7 +22,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var bugs = [{
+var initialBugs = [{
   id: 1,
   status: 'New',
   owner: 'Ravan',
@@ -61,97 +61,124 @@ var BugFilter = /*#__PURE__*/function (_React$Component) {
   return BugFilter;
 }(React.Component);
 
-var BugRow = /*#__PURE__*/function (_React$Component2) {
-  _inherits(BugRow, _React$Component2);
+function BugRow(props) {
+  var bug = props.bug;
+  return /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, bug.id), /*#__PURE__*/React.createElement("td", null, bug.status), /*#__PURE__*/React.createElement("td", null, bug.owner), /*#__PURE__*/React.createElement("td", null, bug.created.toDateString()), /*#__PURE__*/React.createElement("td", null, bug.effort), /*#__PURE__*/React.createElement("td", null, bug.due ? bug.due.toDateString() : ''), /*#__PURE__*/React.createElement("td", null, bug.title));
+}
 
-  var _super2 = _createSuper(BugRow);
+function BugTable(props) {
+  var bugRows = props.bugs.map(function (bug) {
+    return /*#__PURE__*/React.createElement(BugRow, {
+      key: bug.id,
+      bug: bug
+    });
+  });
+  return /*#__PURE__*/React.createElement("table", {
+    className: "bordered-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "ID"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Owner"), /*#__PURE__*/React.createElement("th", null, "Created Date"), /*#__PURE__*/React.createElement("th", null, "Effort"), /*#__PURE__*/React.createElement("th", null, "Due Date"), /*#__PURE__*/React.createElement("th", null, "Title"))), /*#__PURE__*/React.createElement("tbody", null, bugRows));
+}
 
-  function BugRow() {
-    _classCallCheck(this, BugRow);
+var BugAdd = /*#__PURE__*/function (_React$Component2) {
+  _inherits(BugAdd, _React$Component2);
 
-    return _super2.apply(this, arguments);
-  }
-
-  _createClass(BugRow, [{
-    key: "render",
-    value: function render() {
-      var bug = this.props.bug;
-      return /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, bug.id), /*#__PURE__*/React.createElement("td", null, bug.status), /*#__PURE__*/React.createElement("td", null, bug.owner), /*#__PURE__*/React.createElement("td", null, bug.created.toDateString()), /*#__PURE__*/React.createElement("td", null, bug.effort), /*#__PURE__*/React.createElement("td", null, bug.due ? bug.due.toDateString() : ''), /*#__PURE__*/React.createElement("td", null, bug.title));
-    }
-  }]);
-
-  return BugRow;
-}(React.Component);
-
-var BugTable = /*#__PURE__*/function (_React$Component3) {
-  _inherits(BugTable, _React$Component3);
-
-  var _super3 = _createSuper(BugTable);
-
-  function BugTable() {
-    _classCallCheck(this, BugTable);
-
-    return _super3.apply(this, arguments);
-  }
-
-  _createClass(BugTable, [{
-    key: "render",
-    value: function render() {
-      var rowStyle = {
-        border: "1px solid lightblue",
-        padding: 5
-      };
-      var bugRows = bugs.map(function (bug) {
-        return /*#__PURE__*/React.createElement(BugRow, {
-          key: bug.id,
-          bug: bug
-        });
-      });
-      return /*#__PURE__*/React.createElement("table", {
-        className: "bordered-table"
-      }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "ID"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Owner"), /*#__PURE__*/React.createElement("th", null, "Created Date"), /*#__PURE__*/React.createElement("th", null, "Effort"), /*#__PURE__*/React.createElement("th", null, "Due Date"), /*#__PURE__*/React.createElement("th", null, "Title"))), /*#__PURE__*/React.createElement("tbody", null, bugRows));
-    }
-  }]);
-
-  return BugTable;
-}(React.Component);
-
-var BugAdd = /*#__PURE__*/function (_React$Component4) {
-  _inherits(BugAdd, _React$Component4);
-
-  var _super4 = _createSuper(BugAdd);
+  var _super2 = _createSuper(BugAdd);
 
   function BugAdd() {
+    var _this;
+
     _classCallCheck(this, BugAdd);
 
-    return _super4.apply(this, arguments);
+    _this = _super2.call(this);
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(BugAdd, [{
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      e.preventDefault();
+      var form = document.forms.bugAdd;
+      var bug = {
+        owner: form.owner.value,
+        title: form.title.value,
+        status: 'New'
+      };
+      this.props.createBug(bug);
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, "This is a placeholder for a form to add a bug.");
+      return /*#__PURE__*/React.createElement("form", {
+        name: "bugAdd",
+        onSubmit: this.handleSubmit
+      }, /*#__PURE__*/React.createElement("input", {
+        type: "text",
+        name: "owner",
+        placeholder: "Owner"
+      }), /*#__PURE__*/React.createElement("input", {
+        type: "text",
+        name: "title",
+        placeholder: "Title"
+      }), /*#__PURE__*/React.createElement("button", null, "Add"));
     }
   }]);
 
   return BugAdd;
 }(React.Component);
 
-var BugList = /*#__PURE__*/function (_React$Component5) {
-  _inherits(BugList, _React$Component5);
+var BugList = /*#__PURE__*/function (_React$Component3) {
+  _inherits(BugList, _React$Component3);
 
-  var _super5 = _createSuper(BugList);
+  var _super3 = _createSuper(BugList);
 
   function BugList() {
+    var _this2;
+
     _classCallCheck(this, BugList);
 
-    return _super5.apply(this, arguments);
+    _this2 = _super3.call(this);
+    _this2.state = {
+      bugs: []
+    };
+    _this2.createBug = _this2.createBug.bind(_assertThisInitialized(_this2));
+    return _this2;
   }
 
   _createClass(BugList, [{
+    key: "loadData",
+    value: function loadData() {
+      var _this3 = this;
+
+      setTimeout(function () {
+        _this3.setState({
+          bugs: initialBugs
+        });
+      }, 500);
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.loadData();
+    }
+  }, {
+    key: "createBug",
+    value: function createBug(bug) {
+      bug.id = this.state.bugs.length + 1;
+      bug.created = new Date();
+      var newBugsList = this.state.bugs.slice();
+      newBugsList.push(bug);
+      this.setState({
+        bugs: newBugsList
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Bug Tracker"), /*#__PURE__*/React.createElement(BugFilter, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(BugTable, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(BugAdd, null));
+      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Bug Tracker"), /*#__PURE__*/React.createElement(BugFilter, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(BugTable, {
+        bugs: this.state.bugs
+      }), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(BugAdd, {
+        createBug: this.createBug
+      }));
     }
   }]);
 
